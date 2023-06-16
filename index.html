@@ -12,7 +12,13 @@
     <!-- REFRESH ICON NOT IN USE -->
     <!-- <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /> -->
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="src/styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="src/styles/header.css" />
+    <link rel="stylesheet" type="text/css" href="src/styles/mobile.css" />
+    <link rel="stylesheet" type="text/css" href="src/styles/tablet.css" />
+
+    <!-- <link rel="stylesheet" type="text/css" href="iphone.css" /> -->
+    <!-- <link rel="stylesheet" type="text/css" href="ipad.css" /> -->
     <!-- HOWLER JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.js"
         integrity="sha512-dMiBqqEV5i3KqpAdsgQSSZ72DnNib7otY0X+b/Tnn1EmLym1dxuZ19csdZqBnfDniKd9bmNtzStQzuMrIa5Ngw=="
@@ -20,6 +26,24 @@
 </head>
 
 <body class="colour-theme body">
+
+    <header class="site-header">
+        <div class="wrapper--nav site-header__wrapper">
+            <a href="#" class="brand">learning2type.com</a>
+            <nav class="nav">
+                <button class="nav__toggle" aria-expanded="false" type="button">
+                    menu
+                </button>
+                <ul class="nav__wrapper">
+                    <li class="nav__item"><a id="navbar__home" class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav__item"><a id="navbar__about" class="nav-link" href="pages/about.html">About</a></li>
+                    <li class="nav__item"><a id="navbar__links" class="nav-link" href="pages/links.html">Links</a></li>
+                    <li class="nav__item"><a id="navbar__contact" class="nav-link" href="pages/contact.html">Contact</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
     <!-- APP / INFO -->
     <div id="scene--main" class="scene--main timer-style">
 
@@ -70,9 +94,8 @@
                                             value="sentences" />
                                         <label for="sentences">Sentences</label>
 
-                                        <input type="radio" id="js"
-                                            class="radio difficulty-radio disabled-during-timer" name="difficulty"
-                                            value="js" />
+                                        <input type="radio" id="js" class="radio difficulty-radio disabled-during-timer"
+                                            name="difficulty" value="js" />
                                         <label for="js">JS</label>
 
                                     </div>
@@ -730,13 +753,13 @@
                             word and even hitting the right keys in the next word will result in making more errors.
                             This will force you to go back to the first word after your last "Space" and correct your
                             mistakes from then on.
-                            
+
                         </li>
                         <li><span>7:</span>
                             CONSECUTIVE SKIPPED WORDS: You are allowed to skip (by "Space") a max number of 5 words in a
                             row before the page reloads.
                         </li>
-                        
+
                         <br>
                         <p>
                             When practicing without timer, the default number of lines is set to 20.
@@ -768,12 +791,13 @@
                     <ul>
                         <li>
                             <span>Difficulty levels:</span>
-                            <p>Easy - Most common 200 English words Based on 10fastfingers.com (Numeric characters disabled).</p>
+                            <p>Easy - Most common 200 English words Based on 10fastfingers.com (Numeric characters
+                                disabled).</p>
                             <p>Medium - Most common 500 English words / Optional numeric characters.</p>
                             <p>Hard - Most common 3000+ English words / Optional numeric characters.</p>
                             <p>Sentences - Email phrases and Pangrams (TEXT MODIFIERS DISABLED).</p>
                             <P>JS - Javascript reserved keywords, code snippets (TEXT MODIFIERS DISABLED)</P>
-                            
+
                         </li>
 
                         <li>
@@ -882,7 +906,9 @@
                         </li>
                         <li>
                             <span>Accuracy:</span>
-                            Colour coded current and total accuracy percentage rounded down to nearest integer. 100% accuracy is green, anything less than 87% is red and another 6 shades in between with 2% increments.
+                            Colour coded current and total accuracy percentage rounded down to nearest integer. 100%
+                            accuracy is green, anything less than 87% is red and another 6 shades in between with 2%
+                            increments.
                         </li>
                     </ul>
 
@@ -920,13 +946,16 @@
                     <h3>Problem keys</h3>
                     <p>
                         Your problem keys are being highlighted in red on the keyboard during a session.
-                        When current session ends, all mistyped keys (exclusive of numeric keys!) are remembered for the next session and
+                        When current session ends, all mistyped keys (exclusive of numeric keys!) are remembered for the
+                        next session and
                         the new text will only use words that contain your problem key(s) when you click "New".
                         This feature will make you practice those keys.
-                        Problem keys after trailing space will not count towards your problem key words as they are not an
+                        Problem keys after trailing space will not count towards your problem key words as they are not
+                        an
                         actual error in current word.
                         <br>
-                        You can easily skip this option by clicking "New" again or selecting another difficulty level and you will get a new random set of
+                        You can easily skip this option by clicking "New" again or selecting another difficulty level
+                        and you will get a new random set of
                         words from the currently selected level.
 
                     </p>
@@ -1030,17 +1059,17 @@
     </div>
 
     <!-- <div class="scene">
-            <div class="card">
-                <div class="card__face card__face--front">
-                    <button class="test-button"></button>
-                    front
-                </div>
-                <div class="card__face card__face--back">
-                    <button class="test-button"></button>
-                    back
-                </div>
+        <div class="card">
+            <div class="card__face card__face--front">
+                <button class="test-button"></button>
+                front
             </div>
-        </div> -->
+            <div class="card__face card__face--back">
+                <button class="test-button"></button>
+                back
+            </div>
+        </div>
+    </div> -->
 
     <!-- <div class="problem-keys-container">
         <span id="problem-key-span-a" class="problem-key-span">a</span>
@@ -1071,17 +1100,65 @@
         <span id="problem-key-span-z" class="problem-key-span">z</span>
     </div> -->
 
-    <div class="keyboard-container">
+    <!-- <div class="keyboard-container">
         <div class="row-1"></div>
         <div class="row-2"></div>
         <div class="row-3"></div>
         <div class="row-4"></div>
         <div class="row-5"></div>
+    </div> -->
+
+    <div class="small-container">
+
+        <h1>learning2type.com</h1>
+        <div class="spacer-div--mobile"></div>
+        <div class="small-container__text-wrap">
+            <!-- <h1>learning2type.com</h1> -->
+            <h2>Page cannot be displayed.</h2>
+            <p>
+                This app requires a physical keyboard and at least a tablet size screen.
+
+            </p>
+            <p class="red">
+                Please access site using a laptop / desktop or tablet with keyboard connected.
+            </p>
+            <div class="spacer-div--mobile"></div>
+        </div>
+        <div class="small-container__img-wrap">
+            <p>
+                Light theme preview
+                <br>
+                Advanced/Beginner/Info/Timer
+            </p>
+            <div class="light-wrap">
+                <!-- Light theme -->
+                <img src="images/app-adv.jpg" alt="">
+                <img src="images/app-beg.jpg" alt="">
+                <img src="images/app-info.jpg" alt="">
+                <img src="images/app-timer.jpg" alt="">
+            </div>
+            <div class="spacer-div--mobile"></div>
+            <p>
+                Dark theme preview
+                <br>
+                Advanced/Beginner/Info/Timer
+            </p>
+            <div class="dark-wrap">
+                <!-- Dark theme -->
+                <img src="images/app-adv__dark.jpg" alt="">
+                <img src="images/app-beg__dark.jpg" alt="">
+                <img src="images/app-info__dark.jpg" alt="">
+                <img src="images/app-timer__dark.jpg" alt="">
+            </div>
+
+        </div>
+
     </div>
 
+    <footer class="footer"></footer>
 
-
-    <script type="module" src="script.js" type="text/javascript"></script>
+    <script type="module" src="src/scripts/script.js" type="text/javascript"></script>
+    <script type="module" src="src/scripts/navbar-logic.js" type="text/javascript"></script>
 </body>
 
 </html>

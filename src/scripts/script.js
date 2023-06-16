@@ -26,7 +26,9 @@ import {
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 ELEMENT VARIABLES 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
+const mainScene = document.getElementById("scene--main");
 const card = document.getElementById("card--main"); // CARD CONTAINED WITHIN SCENE
+const cardMain = document.getElementById("card--main");
 
 const container = document.getElementById("container");
 const controlsContainer = document.getElementById("controls-container");
@@ -191,6 +193,9 @@ let tempProbWordsArr = [];
 let beginnerOn = false;
 // COLOUR THEME
 let darkThemeOn = false;
+// SENTENCES AND JS DIFFICULTY LEVELS
+let sentencesOn = false;
+let jsOn = false;
 
 // BEGINNER LEVEL BUTTON STATE BOOLEANS
 let level_1_On = false;
@@ -600,12 +605,22 @@ const clearTextFields = () => {
     textSpanContainerNextParagraph.innerHTML = "";
 };
 
+// CLEAR PROB KEYS SET
+const clearProblemKeysSet = () => {
+    problemKeysSet.clear();
+};
+
 // CLEAR TEXT FIELDS ACTIVE / NEXT, INPUT, AND INITIALISE WORDARRAYS
 const clearDataAndDisplay = () => {
     clearTextFields();
     clearTextInput();
     clearIdxTrackers();
     clearArrAndString();
+};
+
+// COLLAPSE MESSAGE DIV
+const collapseMessageDiv = () => {
+    messageDiv.classList.remove("expand");
 };
 
 // CALCULATE ACCURACY PERCENTAGE
@@ -687,6 +702,7 @@ const capsLockWarningsOff = () => {
     capsLockKey.style.background = "none";
     capsLockKey.classList.remove("blink");
     clearMessageDiv();
+    collapseMessageDiv();
 };
 
 const testCapsLock = (event) => {
@@ -742,6 +758,8 @@ const setDifficultyLevel = () => {
         if (difficultyRadios[i].checked) {
             // --- EASY ---
             if (difficultyRadios[i].value === "easy") {
+                sentencesOn = false;
+                jsOn = false;
                 targetArray = [...extractWordsFromString(tenFastFingers200)];
                 maxMistakes = 20;
                 enableSentenceModifiers();
@@ -752,6 +770,8 @@ const setDifficultyLevel = () => {
 
                 // --- MEDIUM ---
             } else if (difficultyRadios[i].value === "medium") {
+                sentencesOn = false;
+                jsOn = false;
                 // CONSTRUCT TARGET ARRAY BASED ON NUMBERS TOGGLE STATE
                 if (numbersOn) {
                     targetArray = [
@@ -774,6 +794,8 @@ const setDifficultyLevel = () => {
 
                 // --- HARD ---
             } else if (difficultyRadios[i].value === "hard") {
+                sentencesOn = false;
+                jsOn = false;
                 if (numbersOn) {
                     // targetArray = [
                     //     ...jsReserved,
@@ -799,6 +821,8 @@ const setDifficultyLevel = () => {
             }
             // --- SENTENCES ---
             else if (difficultyRadios[i].value === "sentences") {
+                sentencesOn = true;
+                jsOn = false;
                 disableSentenceModifiers();
                 sliderWrap.classList.add("transparent-disabled");
                 disableNumbers();
@@ -807,6 +831,8 @@ const setDifficultyLevel = () => {
             else {
                 // ERROR: jsOther[] IS DISABLED AS IT WILL CAUSE BUGS (STRINGS WITH SPACE)
                 // !!! ALSO, HAVE TO LIMIT LENGTH OF STRING TO NOT EXCEED SEQUENCE LENGTH !!!
+                jsOn = true;
+                sentencesOn = false;
                 targetArray = [...jsObjPropMeth, ...jsReserved, ...jsOther];
                 // targetArray = [...jsObjPropMeth, ...jsReserved];
                 // targetArray = [...testArray];
@@ -1281,15 +1307,18 @@ const displayConsecErrors = () => {
     messageDiv.innerText = `${consecutiveErrorCounter} CONSECUTIVE ERRORS!`;
 };
 
+/*
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 ALWAYS CENTER APP VERTICALLY 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
 // SOURCE: https://stackoverflow.com/questions/15615552/get-div-height-with-plain-javascript
 
 // APP CONTAINER HEIGHT
 const appHeight = document.getElementById("container").clientHeight;
-// console.log("CONTAINER HEIGHT", appHeight);
+console.log("CONTAINER HEIGHT", appHeight);
 // GET WINDOW HEIGHT
 let viewportHeight = window.innerHeight;
+// let viewportWidth = window.innerWidth;
+console.log("VIEWPORT HEIGHT", viewportHeight);
 // INITIALISE MARGIN TOP
 let marginTop = 0;
 
@@ -1300,16 +1329,29 @@ const calcMarginTop = () => {
 
 // SET MARGIN TOP IF APP HEIGHT IS SMALLER THAN WINDOW HEIGHT
 const setMarginTop = function () {
+    // EXCLUDE HEADER FROM VIEWPORT HEIGHT (-75)
+    // let viewportWidth = window.innerWidth;
+    // console.log("VIEWPORT WIDTH", viewportWidth);
     viewportHeight = window.innerHeight;
-    // console.log(viewportHeight);
+    console.log(viewportHeight);
+    // if (viewportHeight > appHeight && viewportHeight < 819 && viewportWidth > 700) {
     if (viewportHeight > appHeight) {
         marginTop = calcMarginTop();
-        // console.log("MARGIN TOP:", marginTop);
+        console.log("MARGIN TOP:", marginTop);
         // BOTH CARD SIDES
+        // mainScene.style.marginTop = `${marginTop}px`;
+        // cardMain.style.marginTop = `${marginTop}px`;
         container.style.marginTop = `${marginTop}px`;
         instructionsContainer.style.marginTop = `${marginTop}px`;
     }
 };
+
+// LISTENER EVENTS
+window.addEventListener("resize", setMarginTop);
+window.addEventListener("load", setMarginTop);
+
+// 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰             END              🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
+*/
 
 // COUNT AND DISPLAY REDS IN CURRENT WORD WHEN REACHING TRAILING SPACE
 const countErrorsInCurrentWord = () => {
@@ -1340,14 +1382,12 @@ const countErrorsInCurrentWord = () => {
     }
 };
 
-// LISTENER EVENTS
-window.addEventListener("resize", setMarginTop);
-window.addEventListener("load", setMarginTop);
-
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 PAGE LOAD 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
 startButton.classList.add("apply--active");
 textInput.disabled = true;
+
+
 
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 START BUTTON 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
@@ -1359,15 +1399,22 @@ startButton.addEventListener("click", (event) => {
     // DO NOT DISPLAY PROB WORDS MESSAGE IN "SENTENCES"
     if (sentencesRadio.checked === false) {
         // console.log("SENTENCES NOT SELECTED");
-        if (messageDiv.textContent === "PRACTICE PROBLEM KEYS OR CLICK NEW") {
+        if (
+            messageDiv.textContent ===
+            "PRACTICE YOUR PROBLEM KEY WORDS OR SKIP THIS OPTION BY CLICKING NEW AGAIN"
+        ) {
             clearMessageDiv();
         }
         if (problemKeysSet.size > 0) {
             // console.log("PROB KEY WORDS MESSAGE");
             setTimeout(() => {
-                messageDiv.textContent = "PRACTICE PROBLEM KEYS OR CLICK NEW";
+                messageDiv.classList.add("expand");
+                messageDiv.textContent =
+                    "PRACTICE YOUR PROBLEM KEY WORDS OR SKIP THIS OPTION BY CLICKING NEW AGAIN";
             }, 50);
             // messageDiv.textContent = "TYPE PROB. KEY WORDS OR CLICK NEW";
+        } else {
+            collapseMessageDiv();
         }
     }
 
@@ -1414,13 +1461,19 @@ startButton.addEventListener("click", (event) => {
     if (!beginnerOn) {
         // IF THERE IS ANY PROBLEM KEY,  FILL tempProbWordsArr WITH WORDS THAT CONTAIN PROBLEM KEYS
         findAndApplyProblemKeyWords();
-        problemKeysSet.clear(); // RESET PROBLEM KEYS SET AFTER PROBLEM KEYS HAVE BEEN USED FOR NEW SET OF WORDS
+        clearProblemKeysSet(); // RESET PROBLEM KEYS SET AFTER PROBLEM KEYS HAVE BEEN USED FOR NEW SET OF WORDS
 
         tempProbWordsArr = []; // RESET TEMPORARY ARRAY
         // targetArray = [...common100];
         removeProblemKeyHighlight();
     }
-    problemKeysSet.clear();
+
+    if (jsRadio.checked) {
+        // console.log("JS LEVEL ON");
+        clearProblemKeysSet();
+    }
+
+    clearProblemKeysSet();
     removeProblemKeyHighlight();
     // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 CONTROL PANEL 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
@@ -1495,6 +1548,10 @@ startButton.addEventListener("click", (event) => {
 
     let eventCounter = 0;
     const handleKeyEvent = (event) => {
+        if (messageDiv.classList.contains("expand")) {
+            collapseMessageDiv();
+        }
+
         // console.table({ lineIdx: lineIdx, wordIdx: wordIdx, charIdx: charIdx, strIdx: strIdx });
         // +++ PROBLEM KEY WORDS
         clearMessageDiv();
@@ -1782,13 +1839,21 @@ startButton.addEventListener("click", (event) => {
                 wordArrays[lineIdx][wordIdx][charIdx] !== " " && // SPACE
                 wordArrays[lineIdx][wordIdx][charIdx] !== undefined // CHARACTER IN NEXT WORD (WORD IDX HAS NOT BEEN INCREMENTED)
             ) {
+                // if (!sentencesOn || !jsOn) {
                 problemKeysSet.add(wordArrays[lineIdx][wordIdx][charIdx]);
+                // }
+
                 // console.log(problemKeysSet);
             }
 
             // IF PROBLEMKEYS SET HAS LENGTH LOOP OVER problemKeysSet AND FIND CORRESPONDING problem-key-span FOR EACH ELEMENT
             if (problemKeysSet.size > 0) {
                 highlightProblemKeys();
+            }
+
+            // DISABLE PROB KEY WORDS OPTION BUT STILL ALLOW PROB KEY HIGHLIGHT ON KEYBOARD
+            if (sentencesOn || jsOn) {
+                clearProblemKeysSet();
             }
 
             if (soundOn) {
@@ -1978,7 +2043,7 @@ for (let i = 0, length = difficultyRadios.length; i < length; i++) {
         // console.log(targetArray);
 
         // RESET PROBLEM KEYS SET
-        problemKeysSet.clear();
+        clearProblemKeysSet();
 
         // RESET "EASY, MEDIUM AND HARD" TO DEFAULT 30 SEQUENCE LENGTH
         if (i <= 2) {
@@ -2205,7 +2270,7 @@ const countdown = () => {
         }
 
         // FADE IN CONTROLS AT 2 SECOND MARK
-        if (seconds === 2) {
+        if (seconds === 1) {
             for (let i = 0; i < fadeWithTimerElements.length; i += 1) {
                 fadeWithTimerElements[i].classList.add("fadeIn");
                 fadeWithTimerElements[i].classList.remove("fadeOut");
@@ -2587,8 +2652,13 @@ for (let i = 0; i < levelButtons.length; i += 1) {
 
 // SHOW BEGINNER LEVELS
 beginnerShowButton.addEventListener("click", function () {
+    if (messageDiv.classList.contains("expand")) {
+        setTimeout(() => {
+            collapseMessageDiv();
+        }, 1000);
+    }
     // RESET PROBLEM KEY SET
-    problemKeysSet.clear();
+    clearProblemKeysSet();
 
     // RESET SELECTION TYPE TOGGLE TO "THROUGH"
     if (!inclusiveSelected) {
@@ -2709,7 +2779,7 @@ beginnerHideButton.addEventListener("click", function () {
     // 🀰🀰🀰🀰🀰🀰🀰🀰🀰 SLIDER 🀰🀰🀰🀰🀰🀰🀰🀰🀰
     sliderWrap.classList.remove("transparent-disabled");
 
-    problemKeysSet.clear();
+    clearProblemKeysSet();
 
     startButton.disabled = false;
 
@@ -2732,6 +2802,8 @@ beginnerHideButton.addEventListener("click", function () {
     removeProblemKeyHighlight();
 });
 
+
+
 // JS NOT IN USE, POSITION IS NOW STICKY IN CSS
 
 // INSTRUCTIONS CONTAINER HOVER : CURSOR TOOLTIP
@@ -2749,7 +2821,7 @@ beginnerHideButton.addEventListener("click", function () {
 
 /*
 
- MACBOOK 2/4/23 19:59 
+CENTER KEYBOARD
 
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 CHRIS' IDEAS 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
@@ -2779,17 +2851,8 @@ CURRENT BRANCH:
 
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
-BRANCH: numbers-1
-
-    ☑️ HARD DIFF LEVEL TO ENABLE NUMBERS
-
-    ☑️ STYLE TOGGLE
-    ☑️ STATE TOGGLE
-
-    ☑️ DISABLE STYLE TOGGLE WITH OTHER LEVELS (COLOUR AND TEXTCONTENT, RED/OFF)
-        (DUPLICATE CODE IN setDifficultyLevel())
-
-    ☑️ IMPLEMENT LOGIC
+TABLET SIZE
+    RE-POSITION MESSAGE DIV (LANDSCAPE ORIENTATION DISPLACES IT)
 
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
@@ -2821,8 +2884,20 @@ BRANCH: numbers-1
     
     FEATURES:
 
+        MAKE APP WORK ON TABLETS WITH KEYBOARD CONNECTED
+
+        RESPONSIVENESS
+            PHONES
+                ☑️ IPHONE - DISABLED
+            TABLETS
+                IPAD - DISABLED
+
         INFO TEXT UPDATE
             ☑️ DIFFICULTY LEVELS
+
+        DISABLE PROBLEM KEY WORDS - if (sentencesOn || jsOn)
+            ☑️ SENTENCES
+            ☑️ JS
 
         ☑️ CLEAR PROBLEM KEY HIGHLIGHT ON KEYBOARD WHEN SWITCHING BETWEEN ADV/BEGINNER
 

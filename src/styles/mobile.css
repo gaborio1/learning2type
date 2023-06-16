@@ -1,0 +1,257 @@
+/* 
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 MOBILE SIZE 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 */
+
+/* 
+@media only screen and (max-width: 375px) and (orientation: landscape) {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .body {
+        display: flex;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        background: #f0efeb;
+        border: 10px solid red;
+    }
+
+    .scene--main {
+        display: none;
+    }
+
+    .small-container {
+        display: block;
+        width: 80vw;
+        height: 80vh;
+        padding: 10px 15px 10px 15px;
+        background: var(--body-background--light);
+        border: 1px solid black;
+        border: 1px solid var(--border-grey);
+        border-radius: 7px;
+    }
+
+    .small-container h1 {
+        margin-bottom: 20px;
+    }
+
+    .small-container p {
+        padding: 20px;
+    }
+} */
+.small-container img {
+    /* width: 280px; */
+    /* width: 250px; */
+    /* width: 76vw; */
+    width: 66.6vw;
+    margin: 1px;
+    border-radius: 3px;
+}
+
+/* .small-container__text-wrap,
+.small-container__img-wrap {
+    border: 1px solid black;
+} */
+
+.light-wrap,
+.dark-wrap {
+    margin: 20px auto;
+    /* border: 1px solid red; */
+}
+
+.spacer-div--mobile {
+    width: 79.8vw;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.small-container h1 {
+    /* margin-bottom: -10px; */
+    /* --BORDER-BLUE */
+    color: #529de1;
+}
+
+.small-container h2 {
+    margin: 10px auto;
+}
+
+
+/* IPHONE XR PORTRAIT */
+/* @media only screen and (max-width: 414px) and (max-height: 896px) { */
+/* IPAD MINI PORTRAIT */
+@media only screen and (max-width: 767px) and (max-height: 1023px) {
+
+    .body {
+        height: fit-content;
+        /* background: orange; */
+    }
+
+
+
+    .site-header,
+    .footer {
+        /* display: none; */
+        width: 100vw;
+        height: 50px;
+        z-index: 1;
+    }
+
+    /* @media only screen and (max-width: 1024px) { */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .body {
+        display: flex;
+        /* height: 100vh; */
+        align-items: center;
+        justify-content: center;
+        /* text-align: center; */
+        background: #f0efeb;
+        /* border: 10px solid green; */
+    }
+
+    .scene--main {
+        display: none;
+    }
+
+    .small-container {
+        /* margin-top: 0px !important; */
+        margin: 50px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 80vw;
+        height: fit-content;
+        /* height: 1000px; */
+        padding: 10px 0px 10px 0px;
+        background: var(--body-background--light);
+        border: 1px solid black;
+        border: 1px solid var(--border-grey);
+        border-radius: 7px;
+    }
+
+    .small-container h1 {
+        font-weight: 500;
+        /* margin-bottom: 10px; */
+        /* border-bottom: 1px solid black; */
+    }
+
+    .small-container p {
+        padding: 10px;
+    }
+
+    /* .small-container__text-wrap {
+        border: 1px solid black;
+    }
+
+    .small-container__img-wrap {
+        border: 1px solid black;
+    } */
+}
+
+/* IPHONE XR LANDSCAPE */
+/* @media only screen and (max-width: 896px) and (max-height: 414px) { */
+/* IPAD MINI LANDSCAPE */
+@media only screen and (max-width: 1023px) and (max-height: 767px) {
+
+    .body {
+        height: fit-content;
+        /* background: orange; */
+    }
+
+    .site-header,
+    .footer {
+        /* display: none; */
+        width: 100vw;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    .body {
+        display: flex;
+        /* height: 100vh; */
+
+        align-items: center;
+        justify-content: center;
+        background: #f0efeb;
+        /* border: 10px solid teal; */
+    }
+
+    .scene--main {
+        display: none;
+    }
+
+    .small-container {
+        /* margin-top: 0px !important; */
+        margin: 50px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 80%;
+        height: fit-content;
+        /* height: 1000px; */
+        padding: 10px 0px 10px 0px;
+        background: var(--body-background--light);
+        border: 1px solid black;
+        border: 1px solid var(--border-grey);
+        border-radius: 7px;
+    }
+
+    .small-container h1 {
+        font-weight: 500;
+        /* margin-bottom: 10px; */
+        /* border-bottom: 1px solid black; */
+    }
+
+    .small-container p {
+        padding: 10px;
+    }
+}
+
+/* MAKE H1 SMALLER FOR IPHONE 5 */
+@media only screen and (max-width: 360px) {
+    .small-container {
+        height: fit-content;
+    }
+
+    .small-container h1 {
+        /* margin-bottom: 20px; */
+        font-size: 24px;
+    }
+
+    .small-container h2 {
+        font-size: 18px;
+    }
+
+    .small-container img {
+        /* width: 200px; */
+        width: 66vw;
+        /* margin: 1px; */
+    }
+}
+
+
+/* IPHONE XR */
+/* @media only screen and (max-width: 414px) and (max-height: 896px) {
+    body {
+        background: orange !important;
+    }
+}
+
+@media only screen and (max-width: 896px) and (max-height: 414px) {
+    body {
+        background: orange !important;
+    }
+} */
