@@ -1,7 +1,7 @@
 // ========== ACTIVE NAVLINKS HIGHLIGHT ==========
 
 const linkArray = document.getElementsByClassName("nav-link");
-console.log(linkArray);
+// console.log(linkArray);
 
 // GET CURRENT URL OF PAGE
 const currentUrl = window.location.href;
@@ -12,30 +12,25 @@ const about = document.getElementById("navbar__about");
 const links = document.getElementById("navbar__links");
 const contact = document.getElementById("navbar__contact");
 
-// REMOVE ACTIVE CLASS FROM ALL
-// for (let i = 0; i < linkArray.length; i += 1) {
-//     // linkArray[i].classList.remove("active-link");
-//     linkArray[i].addEventListener("click", function () {
-//         // console.log("link clicked");
-//         console.log(linkArray[i]);
-//         // console.log(this);
-//         linkArray[i].classList.remove("active-link");
-//         // document.querySelector(".site-header").style.background = "red";
-//     });
-// }
-
 // ADD active-link CLASS TO CURRENT PAGE'S LINK
 const addActiveClassToCurrrent = () => {
+    // console.log(currentUrl);
     // ADD ACTIVE CLASS TO CURRENT
     if (currentUrl.includes("index")) {
         home.classList.add("active-link");
-    } else if (currentUrl.includes("about")) {
-        about.classList.add("active-link");
-    } else if (currentUrl.includes("links")) {
-        links.classList.add("active-link");
-    } else {
-        contact.classList.add("active-link");
     }
+    else if (currentUrl.includes("about")) {
+        about.classList.add("active-link");
+    }
+    else if (currentUrl.includes("links")) {
+        links.classList.add("active-link");
+    }
+    else if (currentUrl.includes("contact")) {
+        contact.classList.add("active-link");
+    } else {
+        home.classList.add("active-link");
+    }
+
 };
 
 addActiveClassToCurrrent();

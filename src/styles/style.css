@@ -2595,6 +2595,19 @@ button.btn--flip:hover {
     }
 }
 
+
+@media (max-width: 550px) {
+    a.contact-link--full {
+        display: none;
+    }
+}
+
+@media (min-width: 551px) {
+    a.contact-link--small {
+        display: none;
+    }
+}
+
 /* +++++++++++++++++++++++++++++ */
 
 .single-link-wrap {
