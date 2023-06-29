@@ -2845,9 +2845,17 @@ CENTER KEYBOARD
 
 CURRENT BRANCH:
 
-PAGES LAYOUT:
+KEYBOARD SHORTCUSTS
+    Option+Delete: Delete the previous word.
+    Command+Delete: Delete the line to the left of the cursor.
+
+
+☑️ (TEMP FIX: ADDED MARGIN TO TEXT CONTAINER DIV)PAGES LAYOUT:
     PUT SMALL-CONTAINER / HEADER / FOOTER IN COLOUR-THEME BODY (FLEX COLOUMN)
     IT ONLY WORKS IN MOBILE SIZE, OTHERWISE MAIN CONTENT WILL BE HIDDEN !!!
+
+☑️ MOBILE PORTRAIT ORIENTATION: SOME CONTACT PAGE LINKS OVERFLOW CONTAINER
+    style.css: @media (max-width: 550px)
 
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 

@@ -16,7 +16,7 @@ ul {
 } */
 
 .active-link {
-    height: 58.5px;
+    /* height: 58.5px; */
     color: black;
     /* color: orange; */
     /* border-bottom: 2px solid rgb(253, 186, 62); */
@@ -29,7 +29,8 @@ ul {
 .wrapper--nav {
     display: flex;
     /* justify-content: space-between; */
-    width: 90%;
+    /* !!! */
+    /* width: 90%; */
     max-width: 1000px;
     padding-left: 2rem;
     padding-right: 1rem;
@@ -53,26 +54,77 @@ a {
     color: #dadada;
 }
 
+a.nav-link {
+    /* width: 75px; */
+    height: 50px;
+    /* border: 1px solid black; */
+}
+
 a.brand {
+    opacity: 0.9;
     font-weight: 400;
+    font-weight: 600;
     font-size: 25px;
     color: #000000;
 }
 
-a.brand:hover {
-    color: #dadada;
+/* BRAND SPANS */
+.digit-2 {
+    font-weight: 600;
+    font-size: 30px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: orange;
+    color: rgba(255, 166, 0, 0.886);
 }
 
-a:hover {
+.span--dot-com {
+    font-size: 16px;
+    font-weight: 100;
+    margin-left: 1px;
+
+    /* color: rgb(234, 216, 182); */
+}
+
+
+/* BRAND HOVER */
+a.brand:hover {
+    font-weight: 400;
+    opacity: 0.8;
+    letter-spacing: 0.011rem;
+}
+
+a.brand:hover .span--dot-com {
+    letter-spacing: normal;
+    /* opacity: 1; */
+}
+
+a.brand:hover .digit-2 {
+    font-weight: 400;
+}
+
+/* NAV LINKS HOVER */
+a.nav-link:hover {
     /* font-weight: 700; */
     /* color: #000000; */
     color: orange;
 }
 
-/* a.nav-link {
-    width: 75px;
-    border: 1px solid black;
+/* .digit-2:hover {
+    color: #dadada;
 } */
+
+/* ALING NAV ITEMS WITH BRAND HORIZONTALLY */
+.nav__item a {
+    display: block;
+    padding: 1.15rem 1rem;
+}
+
+.nav__toggle {
+    display: none;
+}
+
+
 
 html {
     -webkit-font-smoothing: antialiased;
@@ -142,9 +194,13 @@ button.nav__toggle {
 ** Tweak as per your needs **
 */
 
-.site-header {
+/* HEADER/FOOTER BACKGROUND */
+.site-header,
+footer {
     position: relative;
+
     /* background-color: #def7ff; */
+    /* background-color: #004d88d2; */
     background-color: var(--border-blue);
 }
 
@@ -217,15 +273,6 @@ button.nav__toggle {
     }
 }
 
-.nav__item a {
-    display: block;
-    padding: 1.5rem 1rem;
-}
-
-.nav__toggle {
-    display: none;
-}
-
 @media (max-width: 599px) {
     .nav__toggle {
         display: block;
@@ -239,13 +286,15 @@ button.nav__toggle {
         /* height: 15px; */
         /* border: 1px solid green; */
     }
+
+    .nav-link.active-link {
+        color: orange;
+    }
 }
 
 .footer {
-    position: relative;
     bottom: 0px;
     height: 25px;
-    background-color: var(--border-blue);
 }
 
 /* .keyboard-container {
