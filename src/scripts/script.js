@@ -173,6 +173,7 @@ let redCounter = 0;
 let orangeCounter = 0;
 let accuracy = 0;
 
+let lastWordRedCounter = 0;
 // NON EXISTING (NULL VALUE) SPANS BEYOND END OF LINE SPACE
 let nullValueSpanCounter = 0;
 // TRACK CONSECUTIVE WRONG KEYS
@@ -285,7 +286,7 @@ const nextLine = () => {
     nullValueSpanCounter = 0;
     // DISPLAY MESSAGE WHEN BOTH TEXT FIELDS HAVE BEEN CLEARED
     if (lineIdx === wordArrays.length) {
-        console.log("END OF TEXT");
+        // console.log("END OF TEXT");
         messageDiv.textContent = `CONGRATULATIONS! ${wordArrays.length} LINES TYPED!`;
     }
 };
@@ -916,7 +917,7 @@ const createSpans = (lineIdx, location) => {
 
 // BACKSPACE
 const handleBackspace = () => {
-    let lastWordRedCounter = 0;
+    // let lastWordRedCounter = 0;
     // console.log("BACKSPACE");
     orangeCounter += 1;
     prevChar();
@@ -1382,10 +1383,60 @@ const countErrorsInCurrentWord = () => {
     }
 };
 
+// REMOVE STYLES IN BACKWARDS LOOP (WRONG KEY: KEYBOARD SHORTCUTS)
+const removeCharStyles = (element) => {
+    // RESET CONSECUTIVE ERRORS
+    consecutiveErrorCounter = 0;
+    // console.log("CONSECUTIVE ERRORS", consecutiveErrorCounter);
+    if (element.classList.contains("red")) {
+        element.classList.remove("red");
+        if (redCounter > 0) {
+            redCounter -= 1;
+        }
+    }
+    if (element.classList.contains("red-background")) {
+        element.classList.remove("red-background");
+    }
+    if (element.classList.contains("orange")) {
+        element.classList.remove("orange");
+        if (orangeCounter > 0) {
+            orangeCounter -= 1;
+        }
+    }
+    if (element.classList.contains("background")) {
+        element.classList.remove("background");
+    }
+    if (element.classList.contains("black-border")) {
+        element.classList.remove("black-border");
+    }
+    if (element.classList.contains("red-border")) {
+        element.classList.remove("red-border");
+    }
+    if (element.classList.contains("orange-border")) {
+        element.classList.remove("orange-border");
+    }
+    if (element.classList.contains("green")) {
+        element.classList.remove("green");
+        if (greenCounter > 0) {
+            greenCounter -= 1;
+        }
+    }
+};
+
+// EXTRACT COUNTER FUNCTIONALITY FROM ABOVE FUNCTION?
+// const decrementColourCounters = (character) => {}
+
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 PAGE LOAD 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
 startButton.classList.add("apply--active");
 textInput.disabled = true;
+
+// PREVENT SPACE BAR FROM SCROLLING PAGE
+window.addEventListener("keydown", function (e) {
+    if (e.keyCode == 32 && e.target == document.body) {
+        e.preventDefault();
+    }
+});
 
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 START BUTTON 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
@@ -1545,16 +1596,23 @@ startButton.addEventListener("click", (event) => {
     // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
     let eventCounter = 0;
+
+    //  +++ DETECT KEY SHORTCUT OPTION+BACKSPACE +++
+    // document.onkeyup = function (e) {
+    //     if (e.altKey && e.which === 8) {
+    //         console.log("alt + backspace shortcut combination was pressed");
+    //     }
+    // };
+    // +++ END +++
+
     const handleKeyEvent = (event) => {
         if (messageDiv.classList.contains("expand")) {
             collapseMessageDiv();
         }
 
         // console.table({ lineIdx: lineIdx, wordIdx: wordIdx, charIdx: charIdx, strIdx: strIdx });
-        // +++ PROBLEM KEY WORDS
         clearMessageDiv();
 
-        // const typedKey = event.key;
         typedKey = event.key;
 
         // console.log("WRONG COUNTER KEY EVENTS", consecutiveErrorCounter);
@@ -1710,6 +1768,14 @@ startButton.addEventListener("click", (event) => {
         }
 
         // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 WRONG KEY OR SHIFT FOR CAPITAL LETTERS 🀰🀰🀰🀰🀰🀰🀰🀰🀰
+
+        // KEYBOARD SHORTCUTS
+
+        // DELETE CURRENT (LAST) WORD
+        // ALT+DELETE - IGNORE ALT (OPTION) KEY
+        // else if (typedKey === "Alt") {
+        //     console.log("ALT KEY");
+        // }
         else if (
             typedKey !== wordArrays[lineIdx][wordIdx][charIdx] &&
             typedKey !== " " &&
@@ -1725,6 +1791,222 @@ startButton.addEventListener("click", (event) => {
             //     wordArrays[lineIdx][wordIdx][charIdx]
             // );
 
+            // DETECT OPTION(ALT) KEY
+            // typedKey === "Alt" && console.log("ALT (OPTION) KEY");
+
+            // if (typedKey === "Alt") {
+            //     console.log("ALT (OPTION) KEY, DO NOTHING!");
+            // }
+
+            //  +++ DETECT KEY SHORTCUT OPTION+BACKSPACE +++
+            // SOURCE: https://codepen.io/melwinalm/pen/zKeWWj
+            document.onkeyup = (event) => {
+                // console.log(e);
+                // console.log("TYPED KEY: ", typedKey);
+
+                if (event.altKey && event.which === 8) {
+                    // console.log("ALT+DELETE, DELETE CURRENT WORD NOW");
+
+                    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                    // +++ OPTION + DELETE REFACTOR (DELETE PREVIOUS WORDS) +++
+                    // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+                    // OPTION KEY SHOULD NOT MOVE CURSOR FORWARD ???
+
+                    // console.table({
+                    //     wordIdx: wordIdx,
+                    //     charIdx: charIdx,
+                    //     strIdx: strIdx,
+                    //     firstChar: wordArrays[lineIdx][wordIdx][charIdx],
+                    // });
+
+                    if (wordIdx > 0) {
+                        if (charIdx === 0) {
+                            // console.log("ALT+DELETE, DELETE PREVIOUS WORD");
+
+                            const prevWordLength =
+                                wordArrays[lineIdx][wordIdx - 1].length;
+
+                            // console.table({
+                            //     wordIdx: wordIdx,
+                            //     charIdx: charIdx,
+                            //     strIdx: strIdx,
+                            //     prevWordLength: prevWordLength,
+                            // });
+
+                            // DECREMENT WORDIDX / CHARIDX
+                            wordIdx -= 1;
+                            charIdx = 0;
+                            // GET CURRENT STRIDX
+
+                            strIdx -= prevWordLength;
+
+                            // GET LENGTH OF PREVIOUS WORD
+                            // START BACKWARDS LOOP FROM CURRENT TO CURRENT - PREV.LENGTH
+                            // REMOVE ALL CLASSES
+                            for (
+                                let i = stringWords.length - 1;
+                                i > strIdx - 1;
+                                i -= 1
+                            ) {
+                                // console.log(stringWords[i]);
+                                let currentCharacter = document.getElementById(
+                                    `span-${i}`
+                                );
+                                removeCharStyles(currentCharacter);
+                            }
+                            // ADD CURSOR TO FIRST CHAR OF NOW CURRENT WORD
+
+                            // console.table({
+                            //     wordIdx: wordIdx,
+                            //     charIdx: charIdx,
+                            //     strIdx: strIdx,
+                            //     prevWordLength: prevWordLength,
+                            // });
+                        }
+                        // HANDLE FIRST WORD
+                    }
+                    // else {
+                    //     console.log("FIRST WORD/CHAR IN LINE!");
+                    // }
+
+                    // --------------------------------------------------------
+                    // --- OPTION + DELETE REFACTOR (DELETE PREVIOUS WORDS) ---
+                    // --------------------------------------------------------
+
+                    // CURSOR BEYOND END OF LINE
+                    if (!currentCharacter) {
+                        // console.log("BEYOND END OF LINE - NULL");
+                        // SET STRIDX TO FIRST CHAR OF LAST WORD
+                        // console.log(wordArrays[lineIdx][wordIdx]);
+
+                        // REMOVE ALL STYLES FROM LAST WORD
+                        const lastWordLength =
+                            wordArrays[lineIdx][wordIdx].length;
+
+                        // START THIS LOOP AT LAST CHAR IN LINE AND STOP AT FIRST CHAR OF LAST WORD, DO NOT RELY ON STRINDX AS IT CAN AFFECT WHERE LOOP ENDS AND NOT ALL STYLES WILL BE REMOVED
+                        for (
+                            let i = stringWords.length - 1;
+                            // i >= strIdx - lastWordLength - 1;
+                            i >= stringWords.length - 1 - lastWordLength - 1;
+                            i -= 1
+                        ) {
+                            let currentCharacter = document.getElementById(
+                                `span-${i}`
+                            );
+                            // console.log("CURRENT CHAR: ", currentCharacter);
+
+                            removeCharStyles(currentCharacter);
+                        }
+
+                        strIdx = stringWords.length - lastWordLength;
+
+                        nullValueSpanCounter = 0;
+                        lastWordRedCounter = 0;
+                        // RESET CHAR IDX
+                        charIdx = 0;
+
+                        // ADD CURSOR AND BACKGROUND TO CURRENT (FIRST) CHAR
+                        document
+                            .getElementById(`span-${strIdx}`)
+                            .classList.add("background", "black-border");
+
+                        // RESET CHARIDX (STAY ON WORDIDX)
+                        charIdx = 0;
+                    }
+                    // CURSOR AT VALID INDEX
+                    else {
+                        // REMOVE ALL COLOUR CODES FROM CURRENT WORD (REMOVE STYLES FROM CHARACTERS IN STRINGWORDS ARRAY)
+                        // GET LENGTH OF BACKWARDS LOOP
+                        let length = charIdx + 1;
+                        // REMOVE STYLES ONE BY ONE UNTIL FIRST CHAR IS REACHED
+
+                        // if (strIdx > stringWords.length - 1) {
+                        //     console.log("PAST END OF LINE");
+                        //     strIdx = stringWords.length - 1;
+                        // }
+
+                        // for (let i = strIdx; i > strIdx - length; i -= 1) {
+
+                        // START LOOP AT THE END OF LINE TO REMOVE ALL STYLES FROM AHEAD OF CURSOR
+                        for (
+                            let i = stringWords.length - 1;
+                            i > strIdx - length;
+                            i -= 1
+                        ) {
+                            let currentCharacter = document.getElementById(
+                                `span-${i}`
+                            );
+
+                            removeCharStyles(currentCharacter);
+                        }
+
+                        // FIND STRIDX FOR FIRST LETTER OF CURRENT WORD
+                        // GET CHARIDX AND SUBTRACT IT FROM STRIDX
+                        strIdx -= charIdx;
+
+                        nullValueSpanCounter = 0;
+                        lastWordRedCounter = 0;
+
+                        // ADD CURSOR AND BACKGROUND TO CURRENT (FIRST) CHAR
+                        document
+                            .getElementById(`span-${strIdx}`)
+                            .classList.add("background", "black-border");
+
+                        // RESET CHARIDX (STAY ON WORDIDX)
+                        charIdx = 0;
+
+                        clearTextInput();
+
+                        // console.table({
+                        //     charIdx: charIdx,
+                        //     strIdx: strIdx,
+                        //     firstChar: wordArrays[lineIdx][wordIdx][charIdx],
+                        // });
+                    }
+                }
+            };
+
+            // DELETE ACTIVE LINE
+            // Command+Delete SHORTCUT
+            const deleteLine = (event) => {
+                if (event.metaKey && event.which === 8) {
+                    // console.log("DELETE LINE NOW");
+
+                    // REMOVE STYLES ONE BY ONE UNTIL FIRST CHAR IS REACHED
+                    for (let i = strIdx; i > -1; i -= 1) {
+                        let currentCharacter = document.getElementById(
+                            `span-${i}`
+                        );
+
+                        removeCharStyles(currentCharacter);
+                    }
+
+                    strIdx = 0;
+                    // ADD CURSOR AND BACKGROUND TO CURRENT (FIRST) CHAR
+                    document
+                        .getElementById(`span-${strIdx}`)
+                        .classList.add("background", "black-border");
+
+                    // RESET CHARIDX (STAY ON WORDIDX)
+                    charIdx = 0;
+
+                    wordIdx = 0;
+
+                    nullValueSpanCounter = 0;
+                    lastWordRedCounter = 0;
+
+                    clearMessageDiv();
+                    clearTextInput();
+                }
+                textInput.removeEventListener("keydown", deleteLine);
+            };
+
+            textInput.addEventListener("keydown", deleteLine);
+
+            // +++ END +++
+
+            // DO NOT INCREMENT ERRORS WITH OPTION / COMMAND ??
             consecutiveErrorCounter += 1;
 
             if (strIdx >= stringWords.length - 1) {
@@ -1892,6 +2174,11 @@ startButton.addEventListener("click", (event) => {
                 }
             }
 
+            // if (typedKey === "Alt") {
+            //     console.log("stop cursor now");
+            //     // strIdx -= 1;
+            //     // charIdx -= 1;
+            // }
             nextChar();
         }
 
@@ -2243,9 +2530,15 @@ const countdown = () => {
     document.querySelector(".body").classList.add("timer-style__body");
     container.classList.add("timer-style__container");
     messageDiv.classList.add("timer-style__message-div");
+    // +++
+    mainScene.classList.add("timer-style__main-scene");
+    coverImageLight.style.opacity = 0;
+    coverImageDark.style.opacity = 0;
+    document.querySelector("#img__portrait--light-theme").style.opacity = 0;
+    // sliderWrap.style.opacity = 0;
 
     let seconds = 60;
-    // seconds = 5;
+    seconds = 10;
     const tick = () => {
         const counter = document.getElementById("counter-div");
         seconds -= 1;
@@ -2267,7 +2560,7 @@ const countdown = () => {
             finalSpeed = currentSpeed;
         }
 
-        // FADE IN CONTROLS AT 2 SECOND MARK
+        // FADE IN CONTROLS AT 1 SECOND MARK
         if (seconds === 1) {
             for (let i = 0; i < fadeWithTimerElements.length; i += 1) {
                 fadeWithTimerElements[i].classList.add("fadeIn");
@@ -2302,6 +2595,13 @@ const countdown = () => {
                 .classList.remove("timer-style__body");
             container.classList.remove("timer-style__container");
             messageDiv.classList.remove("timer-style__message-div");
+            // +++
+            mainScene.classList.remove("timer-style__main-scene");
+            coverImageLight.style.opacity = 1;
+            coverImageDark.style.opacity = 1;
+            document.querySelector(
+                "#img__portrait--light-theme"
+            ).style.opacity = 1;
 
             textInput.removeEventListener("keydown", startCountdown);
             const totalKeystrokes = keyStrokeCounter;
@@ -2386,14 +2686,21 @@ for (let i = 0; i < controlFlipButtons.length; i += 1) {
 
 // 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 COLOUR THEME 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
+const coverImageLight = document.getElementById("img__home--light-theme");
+const coverImageDark = document.getElementById("img__home--dark-theme");
+
 const handleThemeToggle = () => {
     toggleButtonStyle(themeToggle);
     toggleButtonState(themeToggle);
     for (let i = 0; i < colourThemeElements.length; i += 1) {
         if (darkThemeOn) {
             colourThemeElements[i].classList.add("dark-theme");
+            coverImageLight.classList.add("hidden");
+            coverImageDark.classList.remove("hidden");
         } else {
             colourThemeElements[i].classList.remove("dark-theme");
+            coverImageLight.classList.remove("hidden");
+            coverImageDark.classList.add("hidden");
         }
     }
     textInput.focus();
@@ -2800,6 +3107,11 @@ beginnerHideButton.addEventListener("click", function () {
     removeProblemKeyHighlight();
 });
 
+// TEMP FIX FOR SCROLLING UP TO HOME AFTER PAGE RELOAD
+window.onload = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+};
+
 // JS NOT IN USE, POSITION IS NOW STICKY IN CSS
 
 // INSTRUCTIONS CONTAINER HOVER : CURSOR TOOLTIP
@@ -2819,6 +3131,42 @@ beginnerHideButton.addEventListener("click", function () {
 
 CENTER KEYBOARD
 
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰  TODOS  🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 
+
+UP ARROW RE-APPEARS WHEN USING "GO TO APP" IN FOOTER
+    CHECK handleUpArrow in navbar-logic.js
+☑️ DISABLED CONTROL BUTTONS HOVER SHOULD NOT CHANGE BUTTON STYLE
+DIFFICULTY LEVEL TEXT :HOVER LETTER SPACING ISSUES
+☑️ OPTION + DELETE TO WORK ON LAST WORD AND BEYOND END OF LINE
+    IT DOES NOT ALWAYS REMOVE STYLES!!! (BLUE/GREEN CLASS)
+LOOK INTO HOW COLOUR COUNTER BEHAVES WITH KBR SHORTCUTS
+
+HIDE BACKGROUND ENTIRELY WITH TIMER, DON'T SHOW APP BORDER
+    REFACTOR THIS WITH CSS CLASSES, ADD ANIMATION TO COVER IMG
+
+☑️ INCREASE BORDER RADIUS ON CONTAINERS TO MATCH BACKGROUND IMG?
+MAKE LIGHT THEME FOOTER NON TRANSPARENT
+MAKE FOOTER CSS
+BUG: SPACE ON APP/CONTAINERS TRIGGERS PAGE SCROLL
+
+APP WIDTH: 80%, MAX WIDTH: 1000PX
+
+KEYBOARD PROBLEM KEYS HIGHLIGHT CSS
+    ☑️ INCREASE FONT WEIGHT?
+    ☑️ ADJUST CONTRAST
+
+REAL TIME TRACK HIGHLIGHT BACKGROUND / COLOR / FONT WEIGHT
+
+MOBILE SIZE
+    LANDING PAGE
+        BUTTON TEXT: (APP) PREVIEW ?
+    FOOTER (TEMPORARILY HIDDEN IN MOBILE.CSS - NOT ON LGE IPHONE)
+        ONLY DISPLAY SOC MEDIA / CONTACT ICONS
+
+
+OPTON KEYPRESS ALONE SHOULD NOT MOVE CURSOR FORWARD
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰 CHRIS' IDEAS 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
         MAKE DIFFICULTY LEVEL OPTIONS SIMPLER
@@ -2843,11 +3191,171 @@ CENTER KEYBOARD
 
 🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
-CURRENT BRANCH:
+CURRENT BRANCH: APP-LINK
+
+    SCROLL PAGE UP WHEN REFRESHING PAGE
+    (ACTIVE LINK IS ALWAYS HOME AFTER REFRESH EVEN WHEN SCROLL POSITION IS NOT)
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    ☑️ NAVBAR DISAPPEARS AFTER REFRESHHING PAGE !!!
+    (NABBAR AND IMAGE CONTAINER ARE NOW PERMANENTLY STICKY IN CSS)
+        !!! DISABLING JS WILL MAKE ACTIVE LINK BORDER BOTTOMS DISAPPEAR !!!
+
+    ☑️ HOME GREEN BUTTON NOT WORKING IN LIGHT THEME (Z-INDEX?)
+
+    NAVBAR
+        ☑️ STICKY
+        ACTIVE LINK HIGHLIGHT 
+            FONT COLOUR
+            ☑️ FONT WEIGHT
+            ☑️ ASSIGN EQUAL WIDTH?
+            ☑️ BORDER BOTTOM
+            ☑️ ELEMENT HOVER BACKGROUND
+        NAW WRAPPER
+            a.nav-link TO SHRINK HORIZONTALLY 100PX -> 75PX ON WINDOW RESIZE AT AROUND 1100PX
+
+
+    HOME
+        IMAGES (!!! REFACTOR IMAGE TOGGLE !!!)
+            ☑️ LIGHT
+            ☑️ DARK
+            ☑️ MOBILE (ONE PORTRAIT IMG FOR BOTH THEMES)
+        TITLE TEXT
+        COLOUR-THEME BUTTON?
+
+    "GO TO APP"
+        TO BE CENTERED PRECISELY VERTICALLY 
+            USE CALC??
+
+    HAMBURGER
+        REMOVE TEXT SHADOW
+        ☑️ CHANGE COLOUR
+        
+    DROPDOWN
+        ☑️ COLLAPSE AFTER SECTION SELECTED
+        COLLAPSE WHEN UP ARROW IS CLICKED
+
+    UP ARROW
+        ☑️ ANIMATE FADE IN/OUT
+
+    PAGE LAYOUT
+        DIVIDERS?
+        STYLE
+            BOX SHADOW
+                ACTIVE BUTTONS
+                DIFFICULTY TITLES
+                SLIDER
+
+    CONTENT
+        HIDE LINKS, ONLY DISPLAY ICONS
+
+    ABOUT SECTION
+        ☑️ STACK OVERFLOW ICON NOT VISIBLE IN DARK
+        ☑️ CODEWARS ICON IS DUPLICATED IN DARK
+
+    GET IN TOUCH SECTON
+        WRITE TEXT AND ONLY SHOW EMAIL ICON
+
+
+    FOOTER
+        CONTENT WIDTH
+            SAME AS NAVBAR, 90% / MAX 1600
+        DESIGN
+            https://webflow.com/blog/website-footer-design-examples?utm_source=google&utm_medium=search&utm_campaign=SS-GoogleSearch-Nonbrand-DynamicSearchAds-Core&utm_term=aud-520743545921:dsa-1637784841628___585305490218__&gclid=CjwKCAjwqZSlBhBwEiwAfoZUIDWHUO5kcid8EdZ0b_lZ8urV4IB3cZJ7bP6C9fVnosvOtl3z5dWRhBoCzhoQAvD_BwE
+        INCLUDE SOCIAL MEDIA LINKS
+        CONTENT
+            COPYRIGHT NOTICE
+                Copyright © 2023, learning2type.com. All rights reserved.
+            PRIVACY POLICY
+            TERMS OF USE
+            SITEMAP
+            LOGO
+            SOCIAL MEDIA ICONS
+            EMAIL
+
+    SLOGANS
+        "Master Your Keyboard, Elevate Your Words"
+        "Type Swiftly, Communicate Confidently"
+        "Unlock Your Typing Potential"
+        "Precision in Every Keystroke"
+        "Empowering Typists, One Key at a Time"
+        "Type Smart, Type Fast"
+        "Your Journey to Typing Excellence"
+        "Typing Made Effortless"
+        "Typing Reimagined, Skills Perfected"
+        "Type with Grace, Type with Speed"
+
+
+    FOOTER CONTENT
+        Navigation Links:
+
+        Home: Link to the main page of the app or the landing page.
+        About: Information about the app, its purpose, and the development team.
+        Contact: A way for users to get in touch with support or provide feedback.
+        Privacy Policy: Link to the app's privacy policy, especially if you collect user data.
+        Terms of Use: Link to the terms and conditions for using the app.
+        Social Media Icons:
+
+        Links to your app's social media profiles (Facebook, Twitter, Instagram, etc.) for users to follow and engage with your app's community.
+        Copyright and Attribution:
+
+        Copyright notice to protect your content.
+        If your app uses third-party libraries or resources, you might include credits or attributions here.
+        User Account Information (if applicable):
+
+        If your app requires user accounts, you might include the user's profile picture and a link to their profile/settings.
+        Feedback and Help:
+
+        A link or button to a support or help center where users can find resources to troubleshoot issues or contact support.
+        Keyboard Shortcuts Guide:
+
+        If your typing app uses keyboard shortcuts, you could provide a reference guide for users to learn and remember the shortcuts.
+        Language and Theme Settings:
+
+        If your app supports different languages or themes, users might be able to access these settings from the footer.
+        App Version and Updates:
+
+        Display the current version of the app and any update notifications.
+        Footer Menu:
+
+        If your app has a complex structure, you might include a simplified menu with links to important sections.
+        Additional Tools or Features:
+
+        Depending on the nature of your typing app, you might offer links to related tools or features that users might find useful.
+        Donate or Support:
+        If your app is provided for free or has a freemium model, you might include a way for users to support your app financially.
+        Feedback or Survey Form:
+        Allow users to provide feedback or take surveys to improve your app.
+        Remember that the design and content of your app's footer should align with your app's overall design and user experience. Keep it organized, user-friendly, and ensure that the information provided is relevant and helpful to your users.
+
+    TIMER
+        HIDE ALL CONTENT?
+
+    JS
+        NAVBAR SCROLL REFACTOR
+        STICKY REFACTOR
+
+    HTML
+        DELETE UNUSED PAGES
+
+    CSS
+        NAVBAR REFACTOR
+
+🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰🀰
 
 KEYBOARD SHORTCUSTS
-    Option+Delete: Delete the previous word.
-    Command+Delete: Delete the line to the left of the cursor.
+   ☑️ Option+Delete: Delete the previous word.
+        BUGS:
+            REFACTOR CODE
+            NOT WORKING ON BEYOND END OF LINE
+            HOW TO HANDLE ORANGE COUNTER?
+            HANDLE MESSAGES
+    ☑️ Command+Delete: Delete the line to the left of the cursor.
+        BUGS:
+            REFACTOR CODE
+            NOT WORKING ON BEYOND END OF LINE
+            HOW TO HANDLE ORANGE COUNTER?
+            HANDLE MESSAGES
 
 
 ☑️ (TEMP FIX: ADDED MARGIN TO TEXT CONTAINER DIV)PAGES LAYOUT:
